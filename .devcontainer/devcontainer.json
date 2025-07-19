@@ -1,0 +1,23 @@
+{
+  "name": "EchoCode Development Environment",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "forwardPorts": [
+    5173,
+    3000
+  ],
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "javascript.suggest.autoImports": true,
+        "editor.formatOnSave": true
+      },
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "mtxr.sqltools",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+      ]
+    }
+  },
+  "postCreateCommand": "cd frontend && npm install && cd ../backend && npm install"
+}
