@@ -6,7 +6,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-gray-900 text-blue-100 md:px-20">
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-5xl font-bold mb-8 text-center text-blue-400">
-          About Progrify
+          About Echo Code
         </h1>
 
         <div className="bg-gray-800 border border-blue-800 rounded-lg p-6 mb-12">

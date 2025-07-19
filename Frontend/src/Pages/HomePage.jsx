@@ -22,7 +22,7 @@ const HomePage = () => {
                     }>
                     <CopilotPopup
                         labels={{
-                            title: "Progrify Chatbot",
+                            title: "Echo Code Chatbot",
                             initial: "Hi! 👋 Ask me anything related to your code?",
                         }}
                     />
@@ -114,7 +114,7 @@ const HomePageExtend = () => {
                 <div className="flex justify-between w-full mx-auto">
                     <div>
                         <Link to='/'>
-                            <h1 className="text-2xl md:text-3xl font-bold mb-1">Progrify</h1>
+                            <h1 className="text-2xl md:text-3xl font-bold mb-1">Echo Code</h1>
                         </Link>
                         <p className="text-sm md:text-sm text-gray-300 mb-6">
                             Master programming with our AI-powered code editor and intelligent assistant.

@@ -15,7 +15,7 @@ export default function LandingPage() {
       <header className="lg:px-6 h-14 flex items-center border-b border-gray-800 px-24">
         <a className="flex items-center justify-center" href="#">
           <AiOutlineCode className="h-6 w-6 mr-2 text-blue-400" />
-          <span className="font-bold text-blue-400">Progrify</span>
+          <span className="font-bold text-blue-400">Echo Code</span>
         </a>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <a className="text-sm font-medium hover:text-blue-400 transition-colors" href="#features">
@@ -45,7 +45,7 @@ export default function LandingPage() {
               {/* Heading */}
               <div className="space-y-4">
                 <h1 className="text-3xl font-extrabold tracking-tighter text-blue-400 sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up">
-                  Progrify: Learn to Code with AI
+                 Echo Code: Learn to Code with AI
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl animate-fade-in-up delay-100">
                   Master programming with interactive lessons, AI-assisted coding, and real-time feedback. Perfect for beginners and aspiring developers.
@@ -141,7 +141,7 @@ export default function LandingPage() {
     <div className="grid items-center gap-8 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
       {/* GIF */}
       <img
-        alt="Progrify Chatbot"
+        alt="Echo Code Chatbot"
         className="mx-auto rounded-xl object-cover object-center shadow-lg transition-transform duration-500 hover:scale-105"
         height="310"
         src={copilotgif}
@@ -183,7 +183,7 @@ export default function LandingPage() {
       </main>
 
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-gray-800">
-        <p className="text-xs text-gray-400">© 2024 Progrify. All rights reserved.</p>
+        <p className="text-xs text-gray-400">© 2024 Echo Code. All rights reserved.</p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <a className="text-xs hover:underline underline-offset-4 text-gray-400 hover:text-blue-400" href="#">
             Terms of Service
