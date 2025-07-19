@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.copilotKitMessages{
+    background-color: rgb(218, 218, 218);
+}
+
+/* .copilotKitMessage{
+    background-color: rgb(251, 251, 251) !important; 
+
+} */
+
+.copilotKitResponseButton{
+    background-color: rgb(245, 245, 245);
+}
+
+.copilotKitHeader{
+    background-color: rgb(47, 53, 102);
+}
+
+.copilotKitInput{
+    background-color: rgb(229, 229, 229);
+}
+.copilotKitInput textarea{
+    background-color: rgb(229, 229, 229);
+}
+
+.copilotKitCodeBlockToolbarButtons{
+    display: flex;
+    justify-content: space-between;
+    gap: 90px;
+    margin-right: 20px;
+}
+
+.copilotKitDevConsole {
+    display: none;
+}
