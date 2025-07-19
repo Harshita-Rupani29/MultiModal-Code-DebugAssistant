@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+
 const User = {
     async findOne(query) {
         let sql = 'SELECT * FROM users WHERE ';
@@ -29,18 +30,11 @@ const User = {
     },
 
     async create(userData) {
-        const { firstName, lastName, email, password, mobileNumber, verificationStatus, googleId, profilePicture } = userData;
+        const { email, google_id } = userData;
         const result = await pool.query(
-            `INSERT INTO users (first_name, last_name, email, password, mobile_number, verification_status, google_id, profile_picture)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [firstName, lastName, email, password, mobileNumber, verificationStatus, googleId, profilePicture]
-        );
-        return result.rows[0];
-    },
-    async updateVerificationStatus(userId, status) {
-        const result = await pool.query(
-            'UPDATE users SET verification_status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
-            [status, userId]
+            `INSERT INTO users (email, google_id)
+             VALUES ($1, $2) RETURNING *`,
+            [email, google_id]
         );
         return result.rows[0];
     },

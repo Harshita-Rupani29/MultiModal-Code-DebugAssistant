@@ -55,9 +55,9 @@ app.post("/api/copilot", copilotHandler);
 async function testDbConnection() {
     try {
         await pool.query("SELECT 1");
-        console.log("✅ Database connection successfully established on startup!");
+        console.log(" Database connection successfully established on startup!");
     } catch (err) {
-        console.error("❌ Failed to establish database connection on startup:", err.message);
+        console.error(" Failed to establish database connection on startup:", err.message);
         process.exit(1);
     }
 }
@@ -65,5 +65,5 @@ async function testDbConnection() {
 // Start server
 app.listen(port, async () => {
     await testDbConnection();
-    console.log(`🚀 Server running at http://localhost:${port}`);
+    console.log(` Server running at http://localhost:${port}`);
 });
