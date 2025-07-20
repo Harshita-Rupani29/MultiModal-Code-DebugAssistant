@@ -34,13 +34,13 @@ This tool aims to simplify debugging by accepting various inputs—code snippets
 * **PostgreSQL Database:** Stores code history and error patterns for continuous improvement and learning.
 * **Secure Authentication:** Implements JWT tokens for session management and OAuth (Google/GitHub) for convenient login.
 * **File Upload Handling:** Robust backend for secure handling of uploaded screenshots and log files.
-* * **Real-Time Collaboration:** User can invite peers and they can code together and also ask Ai for Anlaysis on Main Code editor.
+* **Real-Time Collaboration:** User can invite peers and they can code together and also ask Ai for Anlaysis on Main Code editor.
 
 ## Demo
 
 Watch a quick demonstration of the AI-Powered Code Debug Assistant in action:
 
-<a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> <img  alt="EchoCodeDemo Video Thumbnail" width="600" /> </a>
+<a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> </a>
 ---
 
 ### Screenshots
