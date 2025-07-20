@@ -7,7 +7,7 @@ import {
 } from "react-icons/ai";
 import backgroundImage from '../images/background.avif';
 import copilotgif from '../images/ExhoCode.gif'
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Make sure Link is imported
 
 export default function LandingPage() {
   return (
@@ -21,13 +21,18 @@ export default function LandingPage() {
           <a className="text-sm font-medium hover:text-blue-400 transition-colors" href="#features">
             Features
           </a>
+          {/* NEW LINK FOR CREATE ROOM */}
+          <Link className="text-sm font-medium hover:text-blue-400 transition-colors" to="/createroom">
+            Create Room
+          </Link>
+          {/* END NEW LINK */}
           <a className="text-sm font-medium hover:text-blue-400 transition-colors" href="#languages">
             Languages
           </a>
           <a className="text-sm font-medium hover:text-blue-400 transition-colors" href="#chatbot">
             Chatbot
           </a>
-          {/* New Login Link */}
+          {/* Login Link */}
           <Link className="text-sm font-medium hover:text-blue-400 transition-colors" to="/login">
             Login
           </Link>

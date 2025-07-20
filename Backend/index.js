@@ -3,25 +3,24 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
-const http = require('http'); // Import http module for the server instance
+const http = require('http'); // Keep this
 const { CopilotRuntime, GoogleGenerativeAIAdapter, copilotRuntimeNodeHttpEndpoint } = require("@copilotkit/runtime");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const pool = require("./config/db");
 const userRoutes = require("./routes/user-route");
 const HttpError = require("./models/http-error");
 require("./config/passport")(passport);
 
-
-// Create app
 const app = express();
 const port = 3000;
+
+const rooms = new Map();
+const roomRoutes = require("./routes/room-route")(rooms);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Session middleware
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -29,19 +28,19 @@ app.use(session({
     cookie: { maxAge: 24 * 60 * 60 * 1000 },
 }));
 
-// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
 app.use("/api/users", userRoutes);
+app.use("/api/rooms", roomRoutes);
 
-
+// CopilotKit AI Runtime setup
 let serviceAdapter;
 try {
     serviceAdapter = new GoogleGenerativeAIAdapter({
         apiKey: process.env.GOOGLE_API_KEY,
-        model: "gemini-1.5-flash"
+        model: "gemini pro"
     });
     console.log("CopilotKit service adapter initialized successfully.");
 } catch (err) {
@@ -70,12 +69,10 @@ const copilotHandler = copilotRuntimeNodeHttpEndpoint({
 });
 
 app.post("/api", async (req, res) => {
-    console.log("Received request for /api");
     try {
         await copilotHandler(req, res);
-        console.log("Successfully processed CopilotKit response.");
     } catch (error) {
-        console.error("Error during CopilotKit streamHttpServerResponse:", error);
+        console.error("Error during CopilotKit response:", error);
         res.status(500).json({ error: "Internal Server Error during AI processing." });
     }
 });
@@ -83,17 +80,35 @@ app.post("/api", async (req, res) => {
 async function testDbConnection() {
     try {
         await pool.query("SELECT 1");
-        console.log(" Database connection successfully established on startup!");
+        console.log("Database connection successfully established on startup!");
     } catch (err) {
-        console.error(" Failed to establish database connection on startup:", err.message);
+        console.error("Failed to establish database connection:", err.message);
         process.exit(1);
     }
 }
 
+// *** IMPORTANT FIXES START HERE ***
+
+// 1. Create the HTTP server instance using your Express app
 const server = http.createServer(app);
 
+const { Server } = require("socket.io");
 
+const io = new Server(server, { // Now 'server' is defined
+    cors: {
+        origin: "http://localhost:5173", // Ensure this matches your client's origin
+        methods: ["GET", "POST"],
+        credentials: true,
+    },
+});
+
+const setupSocket = require("./socket");
+setupSocket(io, rooms);
+
+// 2. Listen on the created HTTP server instance
 server.listen(port, async () => {
     await testDbConnection();
-    console.log(` Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}`);
 });
+
+// *** IMPORTANT FIXES END HERE ***
