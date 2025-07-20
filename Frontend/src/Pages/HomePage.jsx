@@ -10,7 +10,12 @@ import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotPopup } from "@copilotkit/react-ui";
 import "@copilotkit/react-ui/styles.css";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignInAlt, FaSignOutAlt, FaUpload, FaTimesCircle } from 'react-icons/fa'; // Import FaTimesCircle
+
+import ImageUploadModal from '../components/ImageUploadModal';
+// Import the new API functions
+import { extractTextFromImage, analyzeImageError } from '../api/Api';
+
 
 const HomePage = () => {
     return (
@@ -42,6 +47,10 @@ const HomePageExtend = () => {
     const [isRunning, setIsRunning] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const [showImageUploadModal, setShowImageUploadModal] = useState(false);
+    const [extractedTextFromImage, setExtractedTextFromImage] = useState(''); // New state for OCR result
+    const [aiAnalysisResult, setAiAnalysisResult] = useState(null); // New state for full AI analysis result
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -66,6 +75,8 @@ const HomePageExtend = () => {
 
     const handleRun = async () => {
         setIsRunning(true);
+        // Clear any previous AI analysis results when running new code
+        setAiAnalysisResult(null);
         try {
             const response = await executeCode(language, inputCode);
             if (response.run) {
@@ -87,8 +98,39 @@ const HomePageExtend = () => {
         setIsLoggedIn(false);
         navigate('/login');
     };
+
     const handleEditorDidMount = (editor, monaco) => {
-        
+        // You can use this for Monaco editor instance if needed
+    };
+
+    // Callback from ImageUploadModal for OCR text
+    const handleOCRComplete = (text) => {
+        setExtractedTextFromImage(text); // Store the OCR result
+        setAiAnalysisResult(null); // Clear previous AI analysis if any
+    };
+
+    // Callback from ImageUploadModal for full AI analysis result
+    const handleAIAnalysisComplete = (result) => {
+        setAiAnalysisResult(result); // Store the full AI analysis result
+        setExtractedTextFromImage(''); // Clear OCR text once full analysis is available
+        // setShowImageUploadModal(false); // Modal will close itself on successful AI analysis
+    };
+
+    // Callback for any errors during analysis
+    const handleAnalysisError = (errorMessage) => {
+        setAiAnalysisResult({ error: errorMessage }); // Set error in analysis result
+        setExtractedTextFromImage(''); // Clear OCR text on error
+        // setShowImageUploadModal(false); // Modal will close itself on error
+    };
+
+    // Function to clear the OCR result card
+    const clearOCRResult = () => {
+        setExtractedTextFromImage('');
+    };
+
+    // Function to clear the AI Analysis card
+    const clearAIAnalysisResult = () => {
+        setAiAnalysisResult(null);
     };
 
 
@@ -127,7 +169,7 @@ const HomePageExtend = () => {
 
     useCopilotAction({
         name: "analyzeCode",
-        description: "Analyze code and error logs for debugging. Returns a classification, detailed analysis, and a proposed solution with code fix.",
+        description: "Analyze code, error logs, and optionally extracted text from screenshots for debugging. Returns a classification, detailed analysis, and a proposed solution with code fix.",
         parameters: {
             type: "object",
             properties: {
@@ -143,34 +185,43 @@ const HomePageExtend = () => {
                     type: "string",
                     description: "The programming language of the code (e.g., 'python', 'javascript', 'c++').",
                 },
+                extractedText: { // Added extractedText parameter for Copilot action
+                    type: "string",
+                    description: "Text extracted from a screenshot, if available.",
+                },
                 additionalNotes: {
                     type: "string",
                     description: "Any additional context or notes from the user.",
                 },
             },
-            required: ["code", "errorLogs"],
+            required: ["code", "errorLogs"], // Adjust required if extractedText is truly optional
         },
-        handler: async ({ code, errorLogs, language, additionalNotes }) => {
+        handler: async ({ code, errorLogs, language, extractedText, additionalNotes }) => {
             console.log("Copilot Action: analyzeCode triggered with:", {
-                code, errorLogs, language, additionalNotes
+                code, errorLogs, language, extractedText, additionalNotes
             });
-            return `Analyzing your code and logs... This might take a moment.`;
+            // You can call your backend API here if the Copilot action should trigger it
+            // For now, it just returns a message
+            return `Analyzing your code, logs, and any extracted text... This might take a moment.`;
         },
     });
 
     useCopilotAction({
         name: "updateCode",
-        description: "Updates the code, if user asks to change or update code. The code should run without any changes. It should also contain proper spacing.",
-        parameters: [
-            {
-                name: "updatedCode",
-                type: "string",
-                description: "The updated code",
-                required: true,
+        description: "Updates the code in the editor. The code should be fully runnable and correctly formatted.",
+        parameters: {
+            type: "object",
+            properties: {
+                updatedCode: {
+                    type: "string",
+                    description: "The updated code.",
+                },
             },
-        ],
+            required: ["updatedCode"],
+        },
         handler: ({ updatedCode }) => {
             setInputCode(cleanCodeString(updatedCode));
+            return "Code editor updated successfully!";
         },
     });
 
@@ -178,8 +229,9 @@ const HomePageExtend = () => {
         instructions: `The following is the code written in ${language} language.`,
     });
 
+
     return (
-        <div className="min-h-screen bg-gray-900 text-white p-8">
+        <div className="min-h-screen bg-gray-900 text-white p-8 relative">
             <section className="rounded-lg shadow-md">
                 <div className="flex justify-between w-full mx-auto items-center">
                     <div>
@@ -257,6 +309,73 @@ const HomePageExtend = () => {
                     </pre>
                 </div>
             </div>
+
+            {/* Floating Action Button (FAB) */}
+            <button
+                onClick={() => setShowImageUploadModal(true)}
+                className="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-70 flex items-center justify-center text-xl z-40"
+                aria-label="Upload Image for Analysis"
+                title="Upload Image for AI Analysis"
+            >
+                <FaUpload />
+            </button>
+
+            {/* Image Upload Modal */}
+            {showImageUploadModal && (
+                <ImageUploadModal
+                    onClose={() => setShowImageUploadModal(false)}
+                    currentCode={inputCode}
+                    currentOutput={output}
+                    currentLanguage={language}
+                    onOCRComplete={handleOCRComplete} // Pass the new OCR complete handler
+                    onAnalysisComplete={handleAIAnalysisComplete} // Pass the AI analysis complete handler
+                    onAnalysisError={handleAnalysisError}
+                />
+            )}
+
+            {/* OCR Result Card - Displayed separately */}
+            {extractedTextFromImage && (
+                <div className="fixed bottom-8 left-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-80 max-h-96 flex flex-col">
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-lg font-bold">Extracted Text (OCR)</h3>
+                        <button onClick={clearOCRResult} className="text-gray-400 hover:text-red-400">
+                            <FaTimesCircle />
+                        </button>
+                    </div>
+                    <pre className="whitespace-pre-wrap text-sm overflow-y-auto flex-grow bg-gray-900 p-3 rounded">
+                        {extractedTextFromImage}
+                    </pre>
+                    <p className="text-xs text-gray-400 mt-2">This is the text detected in your image.</p>
+                </div>
+            )}
+
+            {/* AI Analysis Result Card - Displayed separately */}
+            {aiAnalysisResult && (
+                <div className="fixed bottom-8 left-96 ml-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-[400px] max-h-[90vh] flex flex-col">
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-lg font-bold">AI Analysis Result</h3>
+                        <button onClick={clearAIAnalysisResult} className="text-gray-400 hover:text-red-400">
+                            <FaTimesCircle />
+                        </button>
+                    </div>
+                    <div className="overflow-y-auto flex-grow">
+                        {aiAnalysisResult.error ? (
+                            <div className="text-red-400">
+                                <strong>Error:</strong> {aiAnalysisResult.error}
+                            </div>
+                        ) : (
+                            <>
+                                <p className="mb-1 text-sm"><span className="font-semibold">Classification:</span> {aiAnalysisResult.classification?.classification} - {aiAnalysisResult.classification?.summary}</p>
+                                <p className="mb-1 text-sm"><span className="font-semibold">Error Type:</span> {aiAnalysisResult.analysis?.errorType}</p>
+                                {/* REMOVED: <p className="mb-1 text-sm"><span className="font-semibold">Summary:</span> {aiAnalysisResult.analysis?.summary}</p> */}
+                               
+                                
+                            </>
+                        )}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-2">This is the detailed analysis from the AI.</p>
+                </div>
+            )}
         </div>
     );
 };

@@ -5,12 +5,19 @@ const session = require("express-session");
 const passport = require("passport");
 const http = require('http'); // Keep this
 const { CopilotRuntime, GoogleGenerativeAIAdapter, copilotRuntimeNodeHttpEndpoint } = require("@copilotkit/runtime");
-
+const fs = require('fs').promises;
 const pool = require("./config/db");
 const userRoutes = require("./routes/user-route");
 const HttpError = require("./models/http-error");
+const aiRoutes = require("./routes/ai-route"); 
 require("./config/passport")(passport);
-
+const multer = require("multer");
+const {
+    extractTextFromImage, // <--- ENSURE THIS IS IMPORTED
+    classifyDebugRequest,
+    analyzeError,
+    generateSolution,
+} = require('./services/ai-services');
 const app = express();
 const port = 3000;
 
@@ -30,17 +37,80 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+const upload = multer({ dest: 'uploads/' });
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/rooms", roomRoutes);
+app.post('/api/ai/extract-text-from-image', upload.single('image'), async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ message: 'No image file uploaded.' });
+    }
+
+    try {
+        const text = await extractTextFromImage(req.file.path);
+        // Clean up the uploaded file
+        await fs.unlink(req.file.path);
+        res.json({ extractedText: text });
+    } catch (error) {
+        console.error('Error in /api/ai/extract-text-from-image:', error);
+        if (req.file) {
+            await fs.unlink(req.file.path).catch(e => console.error("Error deleting temp file:", e));
+        }
+        res.status(500).json({ message: 'Failed to extract text from image.', error: error.message });
+    }
+});
+
+
+// MODIFIED ROUTE: Endpoint for full AI analysis with optional extractedText
+app.post('/api/ai/analyze-image-error', upload.single('image'), async (req, res) => {
+    const { code, errorLogs, language, additionalNotes, extractedText: preExtractedText } = req.body;
+    let finalExtractedText = preExtractedText; // Use pre-extracted text if provided
+
+    try {
+        if (req.file) {
+            // If an image is uploaded AND no pre-extracted text, do OCR
+            if (!preExtractedText) {
+                finalExtractedText = await extractTextFromImage(req.file.path);
+            }
+            // Always delete the temp file if it was uploaded
+            await fs.unlink(req.file.path);
+        }
+
+        const context = {
+            language: language || 'auto',
+            extractedText: finalExtractedText, // Pass extracted text to agents
+            additionalNotes: additionalNotes || '',
+        };
+
+        const initialClassification = await classifyDebugRequest(code, errorLogs, finalExtractedText, language, additionalNotes);
+        context.initialClassification = initialClassification;
+
+        const analysis = await analyzeError(code, errorLogs, context);
+        const solution = await generateSolution(code, errorLogs, { ...context, ...analysis });
+
+        res.json({
+            classification: initialClassification,
+            analysis: analysis,
+            solution: solution,
+            extractedText: finalExtractedText // Also send extracted text back for reference
+        });
+
+    } catch (error) {
+        console.error('Error in /api/ai/analyze-image-error:', error);
+        if (req.file) { // Ensure cleanup if an error occurs early
+            await fs.unlink(req.file.path).catch(e => console.error("Error deleting temp file on error:", e));
+        }
+        res.status(500).json({ message: 'Failed to perform AI analysis from image and code.', error: error.message });
+    }
+});
+
 
 // CopilotKit AI Runtime setup
 let serviceAdapter;
 try {
     serviceAdapter = new GoogleGenerativeAIAdapter({
         apiKey: process.env.GOOGLE_API_KEY,
-        model: "gemini pro"
+        model: "Gemini 1.5 Flash"
     });
     console.log("CopilotKit service adapter initialized successfully.");
 } catch (err) {
