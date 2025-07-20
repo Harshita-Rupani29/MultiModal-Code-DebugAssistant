@@ -6,7 +6,6 @@
 * [Features](#features)
 * [Demo](#demo)
 * [Technologies Used](#technologies-used)
-* [Project Structure](#project-structure)
 * [Getting Started](#getting-started)
     * [Prerequisites](#prerequisites)
     * [Installation](#installation)
@@ -29,13 +28,13 @@ This tool aims to simplify debugging by accepting various inputs—code snippets
 * **Multimodal Input Support:** Accepts code, logs, screenshots, and error traces for comprehensive analysis.
 * **Intelligent Error Extraction:** AI agents are trained to intelligently extract critical error information from diverse inputs.
 * **AI-Powered Code Correction:** Utilizes advanced LLMs (Gemini, GPT-4, Claude 3.5) to suggest accurate code fixes.
-* **Rationalized Solutions:** Provides clear explanations and rationales behind each suggested code correction.
 * **Screenshot Annotation:** Tools for annotating screenshots to highlight specific UI bugs for AI analysis.
 * **Code Editing Interface:** Intuitive React-based frontend for seamless code editing and viewing.
 * **Real-time Log Viewing:** Integrated features for easy viewing and analysis of application logs.
 * **PostgreSQL Database:** Stores code history and error patterns for continuous improvement and learning.
 * **Secure Authentication:** Implements JWT tokens for session management and OAuth (Google/GitHub) for convenient login.
 * **File Upload Handling:** Robust backend for secure handling of uploaded screenshots and log files.
+* * **Real-Time Collaboration:** User can invite peers and they can code together and also ask Ai for Anlaysis on Main Code editor.
 
 ## Demo
 
@@ -50,10 +49,10 @@ Here are some screenshots showcasing different aspects of the application:
 
 | Feature/Page | Screenshot 1 | Screenshot 2 |
 | :--------------------- | :------------------------------- | :------------------------------ |
-| Dashboard/Main UI | ![Dashboard](Demos/Demo2.png) | ![Code Editor](Demos/Demo3.png) |
-| Code Editor | ![Error Analysis](Demos/Demo4.png) | ![Solution View](Demos/Demo5.png) |
-| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo6.png) | ![Annotated UI](Demos/Demo7.png) |
-| Database(Postgres) |  ![Login Page](Demos/Demo9.png) |
+| Dashboard/Main UI | ![Dashboard](Demos/Demo1.png) | ![Code Editor](Demos/Demo2.png) |
+| Code Editor | ![Error Analysis](Demos/Demo3.png) | ![Solution View](Demos/Demo4.png) |
+| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo5.png) | ![Annotated UI](Demos/Demo6.png) |
+| Database(Postgres) |  ![Login Page](Demos/Demo7.png) |
 ---
 
 ## Technologies Used
@@ -83,61 +82,7 @@ Here are some screenshots showcasing different aspects of the application:
 
 * **WebSockets (e.g., Socket.IO):** For real-time collaboration features .
 
-## Project Structure
-├── .devcontainer/
-│   └── devcontainer.json
-├── Backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── database/
-│   ├── middlewares/
-│   ├── models/
-│   ├── node_modules/
-│   ├── routes/
-│   ├── services/
-│   ├── uploads/
-│   ├── .env
-│   ├── .gitignore
-│   ├── eng.traineddata
-│   ├── index.js
-│   ├── package-lock.json
-│   ├── package.json
-│   └── socket.js
-├── Demos/
-│   ├── Demo1.png
-│   ├── Demo2.png
-│   ├── Demo3.png
-│   ├── Demo4.png
-│   ├── Demo5.png
-│   ├── Demo6.png
-│   ├── Demo7.png
-│   ├── Demo8.png
-│   ├── Demo9.png
-│   └── EchoCodeDemo.mp4
-├── Frontend/
-│   ├── node_modules/
-│   ├── public/
-│   ├── src/
-│   │   ├── api/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── images/
-│   │   ├── Pages/
-│   │   ├── utils/
-│   │   ├── App.css
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── .env
-│   ├── .gitignore
-│   ├── eslint.config.js
-│   ├── index.html
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── postcss.config.js
-│   ├── README.md
-│   ├── tailwind.config.js
-│   └── vite.config.js
+
 ## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
