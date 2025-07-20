@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
-// Main Login component
 const Login = () => {
     const [userId, setUserId] = useState(null);
     const [email, setEmail] = useState(null);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate(); // Initialize useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Function to parse URL parameters
         const getUrlParameter = (name) => {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -18,14 +16,12 @@ const Login = () => {
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         };
 
-        // Check for token and user info in URL after Google OAuth callback
         const token = getUrlParameter('token');
         const id = getUrlParameter('userId');
         const userEmail = getUrlParameter('email');
-        const authMessage = getUrlParameter('message'); // Capture message from OAuth callback
+        const authMessage = getUrlParameter('message');
 
         if (token && id && userEmail) {
-            // Store token and user info (e.g., in localStorage)
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('userId', id);
             localStorage.setItem('userEmail', userEmail);
@@ -34,34 +30,28 @@ const Login = () => {
             setEmail(userEmail);
             setMessage(authMessage || 'Successfully logged in with Google!');
 
-            // Clean up URL parameters (optional, but good for UX)
             window.history.replaceState({}, document.title, window.location.pathname);
-
-            // Redirect to home page using navigate, which does not cause a full reload
-            navigate('/home'); // <--- CRITICAL CHANGE HERE
+            navigate('/home');
         } else if (localStorage.getItem('jwtToken')) {
-            // If token already exists in localStorage (e.g., on page refresh)
             setUserId(localStorage.getItem('userId'));
             setEmail(localStorage.getItem('userEmail'));
             setMessage('Welcome back!');
-            // If the user lands on /login but already has a token, redirect to home
-            navigate('/home'); // <--- Also redirect here if already logged in
+            navigate('/home');
         }
-    }, [navigate]); // Add navigate to dependency array
+    }, [navigate]);
 
     const handleGuestLogin = () => {
         setLoading(true);
         setMessage('Continuing as guest...');
-        // Simulate guest login success
         setTimeout(() => {
-            setUserId('guest-user-123'); // Assign a generic ID for guest
+            setUserId('guest-user-123');
             setEmail('guest@example.com');
             setMessage('You are now Browse as a guest.');
-            localStorage.removeItem('jwtToken'); // Ensure no old JWT is present for guest
+            localStorage.removeItem('jwtToken');
             localStorage.setItem('userId', 'guest-user-123');
             localStorage.setItem('userEmail', 'guest@example.com');
             setLoading(false);
-            navigate('/home'); // <--- CRITICAL CHANGE HERE
+            navigate('/home');
         }, 1000);
     };
 
@@ -114,7 +104,7 @@ const Login = () => {
                                 </svg>
                             ) : (
                                 <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12.24 10.24v3.52h6.08c-.24 1.68-.96 3.12-2.08 4.16l-.08.08-2.72 2.16c-1.68 1.36-3.84 2.16-6.16 2.16-4.96 0-9.04-4.08-9.04-9.04s4.08-9.04 9.04-9.04c2.64 0 4.96 1.04 6.72 2.72l2.32-2.32c-2.4-2.4-5.68-3.84-9.04-3.84-7.2 0-13.04 5.84-13.04 13.04s5.84 13.04 13.04 13.04c3.84 0 7.2-1.68 9.6-4.48 2.4-2.8 3.68-6.4 3.68-10.08 0-.72-.08-1.44-.24-2.16h-12.8v-3.52z"/>
+                                    <path d="M12.24 10.24v3.52h6.08c-.24 1.68-.96 3.12-2.08 4.16l-.08.08-2.72 2.16c-1.68 1.36-3.84 2.16-6.16 2.16-4.96 0-9.04-4.08-9.04-9.04s4.08-9.04 9.04-9.04c2.64 0 4.96 1.04 6.72 2.72l2.32-2.32c-2.4-2.4-5.68-3.84-9.04-3.84-7.2 0-13.04 5.84-13.04 13.04s5.84 13.04 13.04 13.04c3.84 0 7.2-1.68 9.6-4.48 2.4-2.8 3.68-6.4 3.68-10.08 0-.72-.08-1.44-.24-2.16h-12.8v-3.52z" />
                                 </svg>
                             )}
                             Continue with Google

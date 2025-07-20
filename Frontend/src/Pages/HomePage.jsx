@@ -10,7 +10,7 @@ import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotPopup } from "@copilotkit/react-ui";
 import "@copilotkit/react-ui/styles.css";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'; // Removed FaLink, FaShareAlt, FaUserPlus
+import { FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
 
 const HomePage = () => {
     return (
@@ -45,7 +45,6 @@ const HomePageExtend = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Helper to get JWT token from local storage (kept for login state)
     const getAuthToken = () => localStorage.getItem('jwtToken');
 
     const cleanCodeString = (str) => {
@@ -88,17 +87,11 @@ const HomePageExtend = () => {
         setIsLoggedIn(false);
         navigate('/login');
     };
-
-    // This function is defined here, but not used in the provided code.
-    // If it's meant to be passed to the Editor's onMount prop, it should be defined outside or memoized.
     const handleEditorDidMount = (editor, monaco) => {
-        // You can store the editor instance here if needed for later manipulation
-        // editorRef.current = editor;
-        // monacoRef.current = monaco;
+        
     };
 
 
-    // Login status check on initial render and storage changes
     useEffect(() => {
         const tokenFromUrl = new URLSearchParams(location.search).get('token');
         const userIdFromUrl = new URLSearchParams(location.search).get('userId');
@@ -200,7 +193,6 @@ const HomePageExtend = () => {
                     <div className="flex gap-4 items-center">
                         {isLoggedIn ? (
                             <>
-                                {/* Removed collaboration buttons */}
                                 <button
                                     onClick={handleLogout}
                                     className="px-4 py-2 rounded-md bg-gradient-to-r from-red-500 via-pink-600 to-purple-600 hover:from-red-600 hover:via-pink-700 hover:to-purple-700 transition-all duration-300 ease-in-out text-white font-semibold shadow-md transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-70 flex items-center gap-2 border border-red-300 hover:border-red-500"
@@ -222,7 +214,6 @@ const HomePageExtend = () => {
                 </div>
             </section >
 
-            {/* Removed authMessage conditional rendering as collaboration is removed */}
 
             <div className="flex justify-between items-center mt-6 mb-4">
                 <div className='flex items-center gap-8'>
@@ -230,7 +221,6 @@ const HomePageExtend = () => {
                     <Dropdown language={language} handleLanguageChange={handleLanguageChange} />
                 </div>
                 <div className='flex gap-6 mr-4'>
-                    {/* Removed Session ID and Collaborators display */}
                     <button
                         onClick={handleRun}
                         disabled={isRunning}
@@ -265,7 +255,6 @@ const HomePageExtend = () => {
                     <pre className="whitespace-pre-wrap h-[500px] overflow-y-auto bg-gray-900 p-4 rounded">
                         {output}
                     </pre>
-                    {/* Removed Online Collaborators display */}
                 </div>
             </div>
         </div>

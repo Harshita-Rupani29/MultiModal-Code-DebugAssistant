@@ -90,7 +90,6 @@ async function testDbConnection() {
     }
 }
 
-// Create an HTTP server from the Express app
 const server = http.createServer(app);
 
 
