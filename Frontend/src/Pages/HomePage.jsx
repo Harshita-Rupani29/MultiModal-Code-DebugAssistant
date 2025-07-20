@@ -236,19 +236,17 @@ const HomePageExtend = () => {
                             <>
                                 <button
                                     onClick={handleLogout}
-                                    className="px-4 py-2 rounded-md bg-gradient-to-r from-red-500 via-pink-600 to-purple-600 hover:from-red-600 hover:via-pink-700 hover:to-purple-700 transition-all duration-300 ease-in-out text-white font-semibold shadow-md transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-70 flex items-center gap-2 border border-red-300 hover:border-red-500"
-                                    style={{ minHeight: '36px', fontSize: '0.95rem', letterSpacing: '0.01em' }}
+                                    className="px-4 py-2 rounded-sm bg-gray-700 hover:bg-gray-600 transition-colors duration-200 text-white font-medium focus:outline-none focus:ring-1 focus:ring-gray-500 flex items-center gap-2"
                                 >
-                                    <FaSignOutAlt className="text-base" /> Logout
+                                    <FaSignOutAlt className="text-sm" /> Logout
                                 </button>
                             </>
                         ) : (
                             <Link
                                 to="/login"
-                                className="px-4 py-2 rounded-md bg-gradient-to-r from-indigo-500 via-blue-600 to-purple-600 hover:from-indigo-600 hover:via-blue-700 hover:to-purple-700 transition-all duration-300 ease-in-out text-white font-semibold shadow-md transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-70 flex items-center gap-2 border border-blue-300 hover:border-blue-500"
-                                style={{ minHeight: '36px', fontSize: '0.95rem', letterSpacing: '0.01em' }}
+                                className="px-4 py-2 rounded-sm bg-blue-600 hover:bg-blue-700 transition-colors duration-200 text-white font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center gap-2"
                             >
-                                <FaSignInAlt className="text-base" /> Login
+                                <FaSignInAlt className="text-sm" /> Login
                             </Link>
                         )}
                     </div>
@@ -265,7 +263,7 @@ const HomePageExtend = () => {
                     <button
                         onClick={handleRun}
                         disabled={isRunning}
-                        className={`px-4 py-2 rounded-md transition ${isRunning ? 'bg-gray-500' : 'bg-blue-600 hover:bg-blue-700'
+                        className={`px-4 py-2 rounded-md transition ${isRunning ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
                             }`}
                     >
                         {isRunning ? 'Running...' : 'Run Code'}
@@ -301,7 +299,7 @@ const HomePageExtend = () => {
 
             <button
                 onClick={() => setShowImageUploadModal(true)}
-                className="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-70 flex items-center justify-center text-xl z-40"
+                className="fixed bottom-10 right-10 bg-blue-700 hover:bg-blue-800 text-white p-4 rounded-full shadow-lg transition-colors duration-200 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 flex items-center justify-center text-xl z-50 animate-subtle-float"
                 aria-label="Upload Image for Analysis"
                 title="Upload Image for AI Analysis"
             >
@@ -321,50 +319,52 @@ const HomePageExtend = () => {
             )}
 
             {extractedTextFromImage && (
-                <div className="fixed bottom-8 left-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-80 max-h-96 flex flex-col">
+                <div className="fixed bottom-10 left-10 bg-gray-800 text-white p-5 rounded-lg shadow-xl z-40 w-72 max-h-80 flex flex-col border border-gray-700 animate-fadeIn">
                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-bold">Extracted Text (OCR)</h3>
-                        <button onClick={clearOCRResult} className="text-gray-400 hover:text-red-400">
+                        <h3 className="text-base font-semibold tracking-tight">Extracted Text (OCR)</h3>
+                        <button onClick={clearOCRResult} className="text-gray-400 hover:text-red-400 transition text-lg">
                             <FaTimesCircle />
                         </button>
                     </div>
-                    <pre className="whitespace-pre-wrap text-sm overflow-y-auto flex-grow bg-gray-900 p-3 rounded">
+                    <pre className="whitespace-pre-wrap text-xs overflow-y-auto flex-grow bg-gray-900 p-3 rounded-md border border-gray-700 font-mono">
                         {extractedTextFromImage}
                     </pre>
-                    <p className="text-xs text-gray-400 mt-2">This is the text detected in your image.</p>
+                    <p className="text-xs text-gray-400 mt-2 text-center">Text detected in your image.</p>
                 </div>
             )}
 
             {aiAnalysisResult && (
-                <div className="fixed bottom-8 left-96 ml-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-[400px] max-h-[90vh] flex flex-col">
+                <div className="fixed bottom-10 left-[24rem] bg-gray-800 text-white p-6 rounded-lg shadow-xl z-50 w-96 max-h-[85vh] flex flex-col border border-gray-700 animate-fadeIn">
                     <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-lg font-bold">AI Analysis Result</h3>
-                        <button onClick={clearAIAnalysisResult} className="text-gray-400 hover:text-red-400">
+                        <h3 className="text-base font-semibold tracking-tight">AI Analysis Result</h3>
+                        <button onClick={clearAIAnalysisResult} className="text-gray-400 hover:text-red-400 transition text-lg">
                             <FaTimesCircle />
                         </button>
                     </div>
-                    <div className="overflow-y-auto flex-grow">
+                    <div className="overflow-y-auto flex-grow text-sm">
                         {aiAnalysisResult.error ? (
-                            <div className="text-red-400">
+                            <div className="text-red-400 font-medium">
                                 <strong>Error:</strong> {aiAnalysisResult.error}
                             </div>
                         ) : (
                             <>
-                                <p className="mb-1 text-sm"><span className="font-semibold">Classification:</span> {aiAnalysisResult.classification?.classification} - {aiAnalysisResult.classification?.summary}</p>
-                                <p className="mb-1 text-sm"><span className="font-semibold">Error Type:</span> {aiAnalysisResult.analysis?.errorType}</p>
-                                <p className="mb-2 text-sm"><span className="font-semibold">Explanation:</span> {aiAnalysisResult.analysis?.explanation}</p>
+                                <p className="mb-1"><span className="font-semibold">Classification:</span> {aiAnalysisResult.classification?.classification} - {aiAnalysisResult.classification?.summary}</p>
+                                <p className="mb-1"><span className="font-semibold">Error Type:</span> {aiAnalysisResult.analysis?.errorType}</p>
+                                
                                 {aiAnalysisResult.solution?.suggestedCodeFix && (
                                     <>
-                                        <h4 className="font-bold text-md mb-2">Suggested Code Fix:</h4>
-                                        <pre className="bg-gray-700 p-2 rounded text-xs overflow-x-auto">
+                                        <h4 className="font-bold text-sm mt-3 mb-1">Suggested Code Fix:</h4>
+                                        <pre className="bg-gray-700 p-3 rounded-md text-xs overflow-x-auto border border-gray-600 font-mono">
                                             {aiAnalysisResult.solution.suggestedCodeFix}
                                         </pre>
                                     </>
                                 )}
+                                <p className="mt-3 text-gray-400 text-xs">Full Analysis: {aiAnalysisResult.analysis?.detailedAnalysis}</p>
+                                <p className="mt-1 text-gray-400 text-xs">Solution Description: {aiAnalysisResult.solution?.description}</p>
                             </>
                         )}
                     </div>
-                    <p className="text-xs text-gray-400 mt-2">This is the detailed analysis from the AI.</p>
+                    <p className="text-xs text-gray-400 mt-2 text-center">Detailed analysis from the AI.</p>
                 </div>
             )}
         </div>

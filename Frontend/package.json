@@ -12,6 +12,7 @@
   "dependencies": {
     "@copilotkit/react-core": "^1.9.3",
     "@copilotkit/react-ui": "^1.9.3",
+    "@heroicons/react": "^2.2.0",
     "@monaco-editor/react": "^4.7.0",
     "axios": "^1.10.0",
     "react": "^19.1.0",
