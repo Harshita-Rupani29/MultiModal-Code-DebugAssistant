@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 // Main Login component
 const Login = () => {
@@ -6,6 +7,7 @@ const Login = () => {
     const [email, setEmail] = useState(null);
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         // Function to parse URL parameters
@@ -34,13 +36,18 @@ const Login = () => {
 
             // Clean up URL parameters (optional, but good for UX)
             window.history.replaceState({}, document.title, window.location.pathname);
+
+            // Redirect to home page using navigate, which does not cause a full reload
+            navigate('/home'); // <--- CRITICAL CHANGE HERE
         } else if (localStorage.getItem('jwtToken')) {
             // If token already exists in localStorage (e.g., on page refresh)
             setUserId(localStorage.getItem('userId'));
             setEmail(localStorage.getItem('userEmail'));
             setMessage('Welcome back!');
+            // If the user lands on /login but already has a token, redirect to home
+            navigate('/home'); // <--- Also redirect here if already logged in
         }
-    }, []);
+    }, [navigate]); // Add navigate to dependency array
 
     const handleGuestLogin = () => {
         setLoading(true);
@@ -49,19 +56,19 @@ const Login = () => {
         setTimeout(() => {
             setUserId('guest-user-123'); // Assign a generic ID for guest
             setEmail('guest@example.com');
-            setMessage('You are now browsing as a guest.');
+            setMessage('You are now Browse as a guest.');
             localStorage.removeItem('jwtToken'); // Ensure no old JWT is present for guest
             localStorage.setItem('userId', 'guest-user-123');
             localStorage.setItem('userEmail', 'guest@example.com');
             setLoading(false);
-            window.location.href = '/home'; // Redirect to /home after guest login
+            navigate('/home'); // <--- CRITICAL CHANGE HERE
         }, 1000);
     };
 
     const handleGoogleLogin = () => {
         setLoading(true);
         setMessage('Redirecting to Google for authentication...');
-         window.location.href = 'http://localhost:3000/api/users/auth/google'; 
+        window.location.href = 'http://localhost:3000/api/users/auth/google';
     };
 
     const handleLogout = () => {

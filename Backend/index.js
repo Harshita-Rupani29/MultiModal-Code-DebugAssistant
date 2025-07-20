@@ -1,15 +1,20 @@
+// index.js (Server-side)
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
+const http = require('http'); // Import http module for the server instance
 const { CopilotRuntime, GoogleGenerativeAIAdapter, copilotRuntimeNodeHttpEndpoint } = require("@copilotkit/runtime");
-const { GoogleGenerativeAI } = require("@google/generative-ai"); 
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const pool = require("./config/db");
 const userRoutes = require("./routes/user-route");
 const HttpError = require("./models/http-error");
-require("./config/passport")(passport); 
+require("./config/passport")(passport);
+
+// !!! REMOVED: Import your socket setup function
+// const { setupSocket } = require('./setUpSocket'); // This line is removed
 
 // Create app
 const app = express();
@@ -24,7 +29,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }, 
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
 }));
 
 // Passport middleware
@@ -39,20 +44,18 @@ let serviceAdapter;
 try {
     serviceAdapter = new GoogleGenerativeAIAdapter({
         apiKey: process.env.GOOGLE_API_KEY,
-
         model: "gemini-1.5-flash"
     });
     console.log("CopilotKit service adapter initialized successfully.");
 } catch (err) {
     console.error("Error initializing CopilotKit service adapter:", err);
-   
     process.exit(1);
 }
 
 let runtime;
 try {
     runtime = new CopilotRuntime({
-        actions: [], 
+        actions: [],
         chat: {
             serviceAdapter: serviceAdapter
         }
@@ -60,23 +63,21 @@ try {
     console.log("CopilotKit runtime initialized successfully.");
 } catch (err) {
     console.error("Error initializing CopilotKit runtime:", err);
-   
     process.exit(1);
 }
 
 const copilotHandler = copilotRuntimeNodeHttpEndpoint({
-    endpoint: "/api", 
+    endpoint: "/api",
     runtime,
     serviceAdapter,
 });
 
 app.post("/api", async (req, res) => {
-    console.log("Received request for /api"); 
+    console.log("Received request for /api");
     try {
-        await copilotHandler(req, res); 
+        await copilotHandler(req, res);
         console.log("Successfully processed CopilotKit response.");
     } catch (error) {
-        
         console.error("Error during CopilotKit streamHttpServerResponse:", error);
         res.status(500).json({ error: "Internal Server Error during AI processing." });
     }
@@ -92,7 +93,13 @@ async function testDbConnection() {
     }
 }
 
-app.listen(port, async () => {
+// Create an HTTP server from the Express app (KEEP THIS)
+const server = http.createServer(app);
+
+// !!! REMOVED: Setup Socket.IO with the HTTP server
+// setupSocket(server); // This line is removed
+
+server.listen(port, async () => {
     await testDbConnection();
     console.log(` Server running at http://localhost:${port}`);
 });
