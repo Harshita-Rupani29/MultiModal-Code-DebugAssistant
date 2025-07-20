@@ -2,21 +2,19 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs/promises'); // For deleting the file after processing
+const fs = require('fs/promises'); 
 
 const {
     extractTextFromImage,
     classifyDebugRequest,
     analyzeError,
     generateSolution
-} = require('../services/ai-services'); // Adjust path if necessary
-
+} = require('../services/ai-services');
 const router = express.Router();
 
-// Configure Multer for image uploads
 const upload = multer({
-    dest: 'uploads/', // Temporary directory for storing uploaded files
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB file size limit
+    dest: 'uploads/', 
+    limits: { fileSize: 5 * 1024 * 1024 }, 
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith('image/')) {
             cb(null, true);
@@ -26,66 +24,62 @@ const upload = multer({
     }
 });
 
-// Route for image-based error analysis
-router.post('/analyze-image-error', upload.single('image'), async (req, res, next) => {
+router.post('/extract-text-from-image', upload.single('image'), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No image file uploaded.' });
     }
 
-    const { code, errorLogs, language, additionalNotes } = req.body;
-    const imagePath = req.file.path; // Path to the temporarily saved image
+    try {
+        const text = await extractTextFromImage(req.file.path);
+        await fs.unlink(req.file.path);
+        res.json({ extractedText: text });
+    } catch (error) {
+        console.error('Error in /api/ai/extract-text-from-image:', error);
+        if (req.file) {
+            await fs.unlink(req.file.path).catch(e => console.error("Error deleting temp file:", e));
+        }
+        res.status(500).json({ message: 'Failed to extract text from image.', error: error.message });
+    }
+});
+
+router.post('/analyze-image-error', upload.single('image'), async (req, res, next) => {
+    const { code, errorLogs, language, additionalNotes, extractedText: preExtractedText } = req.body;
+    let finalExtractedText = preExtractedText;
 
     try {
-        // 1. Extract text from the image using OCR
-        const extractedText = await extractTextFromImage(imagePath);
-        console.log("Extracted Text from Image:", extractedText);
+        if (req.file) {
+            if (!preExtractedText) {
+                finalExtractedText = await extractTextFromImage(req.file.path);
+            }
+            await fs.unlink(req.file.path); 
+        }
 
-        // 2. Classify the debug request
-        const initialClassification = await classifyDebugRequest(
-            code,
-            errorLogs,
-            extractedText,
-            language,
-            additionalNotes
-        );
-        console.log("Initial Classification:", initialClassification);
+        const context = {
+            language: language || 'auto',
+            extractedText: finalExtractedText,
+            additionalNotes: additionalNotes || '',
+        };
 
-        // 3. Analyze the error based on all inputs
-        const errorAnalysis = await analyzeError(code, errorLogs, {
-            language,
-            extractedText,
-            additionalNotes,
-            initialClassification
-        });
-        console.log("Error Analysis:", errorAnalysis);
+        const initialClassification = await classifyDebugRequest(code, errorLogs, finalExtractedText, language, additionalNotes);
+        context.initialClassification = initialClassification;
 
-        // 4. Generate the solution
-        const solution = await generateSolution(code, errorLogs, {
-            ...errorAnalysis, // Pass error analysis details
-            language,
-            extractedText,
-            additionalNotes
-        });
-        console.log("Generated Solution:", solution);
+        const analysis = await analyzeError(code, errorLogs, context);
+        const solution = await generateSolution(code, errorLogs, { ...context, ...analysis });
 
-        // Send the complete analysis back to the client
         res.json({
             classification: initialClassification,
-            analysis: errorAnalysis,
-            solution: solution
+            analysis: analysis,
+            solution: solution,
+            extractedText: finalExtractedText
         });
 
     } catch (error) {
         console.error("Full error analysis pipeline failed:", error);
+        if (req.file) {
+            await fs.unlink(req.file.path).catch(e => console.error("Error deleting temp file on error:", e));
+        }
         res.status(500).json({ message: "Failed to analyze image and code.", error: error.message });
     } finally {
-        // Clean up: Delete the uploaded file
-        try {
-            await fs.unlink(imagePath);
-            console.log(`Deleted temporary file: ${imagePath}`);
-        } catch (unlinkError) {
-            console.error("Failed to delete temporary file:", unlinkError);
-        }
     }
 });
 

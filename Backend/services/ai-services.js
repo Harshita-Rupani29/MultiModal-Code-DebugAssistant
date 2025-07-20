@@ -2,11 +2,9 @@
 require('dotenv').config();
 const fs = require('fs/promises'); 
 
-// --- LLM Client
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY);
 
-// --- OCR Client (Tesseract.js) 
 const Tesseract = require('tesseract.js'); 
 
 function parseGeminiJson(text) {
@@ -66,10 +64,6 @@ async function callGeminiForAnalysis(prompt, modelName = "gemini-1.5-flash") {
 }
 
 
-/**
- * Agent 1: Initial Classification/Routing
- * Classifies the type of debug request or its core issue.
- */
 async function classifyDebugRequest(code, errorLogs, extractedText, language, additionalNotes) {
     const prompt = `You are an intelligent assistant for classifying debug requests. Based on the provided code, error logs, and any extracted text from screenshots, classify the primary nature of the debugging request.
     Possible categories: "Syntax Error", "Runtime Error", "Logical Error", "API Misuse", "Configuration Issue", "UI/Visual Bug", "Performance Issue", "External Dependency Issue", "Deployment Issue", "Other".
@@ -103,10 +97,6 @@ async function classifyDebugRequest(code, errorLogs, extractedText, language, ad
     }
 }
 
-/**
- * Agent 2: Error Analysis Agent
- * Analyzes the root cause of the error.
- */
 async function analyzeError(code, errorLogs, context) {
     const prompt = `You are an expert code debugging assistant. Your task is to analyze the provided code and associated error logs.
     Identify the root cause of the problem, classify the error type (e.g., Syntax Error, Runtime Error, Logical Error, API Misuse, Configuration Issue), and provide a detailed explanation.
@@ -147,10 +137,6 @@ async function analyzeError(code, errorLogs, context) {
     }
 }
 
-/**
- * Agent 3: Solution Generation Agent
- * Generates a step-by-step solution and an optional code fix.
- */
 async function generateSolution(code, errorLogs, analysisContext) {
     const prompt = `You are an expert code debugging solution generator. Based on the provided code, error logs, and the previous error analysis, generate a clear, step-by-step solution to fix the problem. If applicable, also provide the corrected code snippet.
 
@@ -188,8 +174,6 @@ async function generateSolution(code, errorLogs, analysisContext) {
     }
 }
 
-
-// --- Computer Vision (OCR for Screenshots) - Using Tesseract.js ---
 async function extractTextFromImage(imagePath) {
     try {
         const { data: { text } } = await Tesseract.recognize(

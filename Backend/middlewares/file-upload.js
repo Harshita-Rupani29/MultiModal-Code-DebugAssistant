@@ -4,7 +4,6 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid'); 
 const HttpError = require('../models/http-error');
 
-// Configure storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/');
@@ -28,7 +27,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1024 * 1024 * 5 }, // 5MB limit
+    limits: { fileSize: 1024 * 1024 * 5 },
     fileFilter: fileFilter
 });
 
