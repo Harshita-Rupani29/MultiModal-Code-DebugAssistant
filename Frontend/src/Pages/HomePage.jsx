@@ -359,8 +359,7 @@ const HomePageExtend = () => {
                                         </pre>
                                     </>
                                 )}
-                                <p className="mt-3 text-gray-400 text-xs">Full Analysis: {aiAnalysisResult.analysis?.detailedAnalysis}</p>
-                                <p className="mt-1 text-gray-400 text-xs">Solution Description: {aiAnalysisResult.solution?.description}</p>
+                                
                             </>
                         )}
                     </div>
