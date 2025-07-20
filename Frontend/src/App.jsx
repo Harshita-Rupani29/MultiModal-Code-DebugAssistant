@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import LandingPage from "./Pages/LandingPage";
 import AboutPage from "./Pages/AboutPage";
 import Login from "./Pages/Login";
+import ChatApp from "./chatapp";
 
 function App() {
   return (
@@ -12,7 +13,6 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/about" element={<AboutPage/>} />
         <Route path="/login" element={<Login />} />
-      
       </Routes>
     </Router>
   );

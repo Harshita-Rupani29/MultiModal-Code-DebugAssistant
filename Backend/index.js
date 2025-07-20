@@ -1,4 +1,3 @@
-// index.js (Server-side)
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -13,8 +12,6 @@ const userRoutes = require("./routes/user-route");
 const HttpError = require("./models/http-error");
 require("./config/passport")(passport);
 
-// !!! REMOVED: Import your socket setup function
-// const { setupSocket } = require('./setUpSocket'); // This line is removed
 
 // Create app
 const app = express();
@@ -93,11 +90,9 @@ async function testDbConnection() {
     }
 }
 
-// Create an HTTP server from the Express app (KEEP THIS)
+// Create an HTTP server from the Express app
 const server = http.createServer(app);
 
-// !!! REMOVED: Setup Socket.IO with the HTTP server
-// setupSocket(server); // This line is removed
 
 server.listen(port, async () => {
     await testDbConnection();
