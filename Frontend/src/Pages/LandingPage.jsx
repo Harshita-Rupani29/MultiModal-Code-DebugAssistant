@@ -1,9 +1,9 @@
-import { 
-  AiOutlineThunderbolt, 
-  AiOutlineMessage, 
-  AiOutlineGlobal, 
-  AiOutlineCode, 
-  AiOutlineCheck 
+import {
+  AiOutlineThunderbolt,
+  AiOutlineMessage,
+  AiOutlineGlobal,
+  AiOutlineCode,
+  AiOutlineCheck
 } from "react-icons/ai";
 import backgroundImage from '../images/background.avif';
 import copilotgif from '../images/Progrify.gif'
@@ -27,6 +27,10 @@ export default function LandingPage() {
           <a className="text-sm font-medium hover:text-blue-400 transition-colors" href="#chatbot">
             Chatbot
           </a>
+          {/* New Login Link */}
+          <Link className="text-sm font-medium hover:text-blue-400 transition-colors" to="/login">
+            Login
+          </Link>
         </nav>
       </header>
 
@@ -45,7 +49,7 @@ export default function LandingPage() {
               {/* Heading */}
               <div className="space-y-4">
                 <h1 className="text-3xl font-extrabold tracking-tighter text-blue-400 sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up">
-                 Echo Code: Learn to Code with AI
+                  Echo Code: Learn to Code with AI
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl animate-fade-in-up delay-100">
                   Master programming with interactive lessons, AI-assisted coding, and real-time feedback. Perfect for beginners and aspiring developers.
@@ -134,51 +138,51 @@ export default function LandingPage() {
           </div>
         </section>
 
-{/* Chatbot Section */}
-<section id="chatbot" className="flex justify-center w-full py-16 md:py-32 bg-gray-800 relative overflow-hidden px-24">
-  {/* Content Container */}
-  <div className="container px-4 md:px-8 relative z-10">
-    <div className="grid items-center gap-8 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
-      {/* GIF */}
-      <img
-        alt="Echo Code Chatbot"
-        className="mx-auto rounded-xl object-cover object-center shadow-lg transition-transform duration-500 hover:scale-105"
-        height="310"
-        src={copilotgif}
-        width="550"
-      />
+        {/* Chatbot Section */}
+        <section id="chatbot" className="flex justify-center w-full py-16 md:py-32 bg-gray-800 relative overflow-hidden px-24">
+          {/* Content Container */}
+          <div className="container px-4 md:px-8 relative z-10">
+            <div className="grid items-center gap-8 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
+              {/* GIF */}
+              <img
+                alt="Echo Code Chatbot"
+                className="mx-auto rounded-xl object-cover object-center shadow-lg transition-transform duration-500 hover:scale-105"
+                height="310"
+                src={copilotgif}
+                width="550"
+              />
 
-      {/* Text Content */}
-      <div className="flex flex-col justify-center space-y-6 lg:space-y-8">
-        {/* Heading */}
-        <div className="space-y-4">
-          <h2 className="text-4xl font-bold tracking-tight text-blue-400 sm:text-5xl md:text-6xl">
-            Intelligent Code Assistant
-          </h2>
-          <p className="max-w-[600px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-            Meet our AI-powered chatbot that tracks your code in real-time. Ask questions, receive instant explanations, and let CopilotKit help you modify your code effortlessly.
-          </p>
-        </div>
+              {/* Text Content */}
+              <div className="flex flex-col justify-center space-y-6 lg:space-y-8">
+                {/* Heading */}
+                <div className="space-y-4">
+                  <h2 className="text-4xl font-bold tracking-tight text-blue-400 sm:text-5xl md:text-6xl">
+                    Intelligent Code Assistant
+                  </h2>
+                  <p className="max-w-[600px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Meet our AI-powered chatbot that tracks your code in real-time. Ask questions, receive instant explanations, and let CopilotKit help you modify your code effortlessly.
+                  </p>
+                </div>
 
-        {/* Features List */}
-        <ul className="grid gap-3 py-4">
-          <li className="flex items-center gap-3">
-            <AiOutlineCheck className="text-blue-400 h-6 w-6" />
-            <span className="text-gray-300">Real-Time Code Tracking</span>
-          </li>
-          <li className="flex items-center gap-3">
-            <AiOutlineCheck className="text-blue-400 h-6 w-6" />
-            <span className="text-gray-300">Interactive Q&A</span>
-          </li>
-          <li className="flex items-center gap-3">
-            <AiOutlineCheck className="text-blue-400 h-6 w-6" />
-            <span className="text-gray-300">Code Modification with CopilotKit</span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
+                {/* Features List */}
+                <ul className="grid gap-3 py-4">
+                  <li className="flex items-center gap-3">
+                    <AiOutlineCheck className="text-blue-400 h-6 w-6" />
+                    <span className="text-gray-300">Real-Time Code Tracking</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <AiOutlineCheck className="text-blue-400 h-6 w-6" />
+                    <span className="text-gray-300">Interactive Q&A</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <AiOutlineCheck className="text-blue-400 h-6 w-6" />
+                    <span className="text-gray-300">Code Modification with CopilotKit</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
 
       </main>
 
