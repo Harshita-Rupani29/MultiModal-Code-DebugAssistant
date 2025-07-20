@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { executeCode } from '../api/Api';
 import { LANGUAGE_VERSIONS } from '../utils/constants';
 
-// Add onLanguageChange prop
-const CodeExecutor = ({ code, onLanguageChange }) => { // <--- Added onLanguageChange
+const CodeExecutor = ({ code, onLanguageChange }) => {
   const [output, setOutput] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +35,6 @@ const CodeExecutor = ({ code, onLanguageChange }) => { // <--- Added onLanguageC
   const handleLanguageChange = (e) => {
     const newLanguage = e.target.value;
     setSelectedLanguage(newLanguage);
-    // Call the new prop to inform the parent about the language change
     if (onLanguageChange) {
       onLanguageChange(newLanguage);
     }
@@ -79,7 +77,7 @@ const CodeExecutor = ({ code, onLanguageChange }) => { // <--- Added onLanguageC
 
 CodeExecutor.propTypes = {
   code: PropTypes.string.isRequired,
-  onLanguageChange: PropTypes.func, // <--- Added propType
+  onLanguageChange: PropTypes.func, 
 };
 
 export default CodeExecutor;

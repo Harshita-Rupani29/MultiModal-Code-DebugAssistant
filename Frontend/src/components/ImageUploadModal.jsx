@@ -1,27 +1,26 @@
-// components/ImageUploadModal.jsx
+
 import React, { useState, useEffect } from 'react';
-// Assuming 'extractTextFromImage' and 'analyzeImageError' are available
-import { extractTextFromImage, analyzeImageError } from '../api/Api'; // You'll need to expose extractTextFromImage in your API
+import { extractTextFromImage, analyzeImageError } from '../api/Api'; 
 
 const ImageUploadModal = ({
     onClose,
     currentCode,
     currentOutput,
     currentLanguage,
-    onAnalysisComplete, // This will be for the *full AI analysis*
-    onOCRComplete,      // New prop: to send extracted text back to HomePageExtend
+    onAnalysisComplete, 
+    onOCRComplete,     
     onAnalysisError
 }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [additionalNotes, setAdditionalNotes] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState('');
-    const [extractedText, setExtractedText] = useState(''); // To store OCR result
-    const [showAnalysisResult, setShowAnalysisResult] = useState(false); // To control display of full AI analysis inside modal if needed
+    const [extractedText, setExtractedText] = useState(''); 
+    const [showAnalysisResult, setShowAnalysisResult] = useState(false); 
 
     const handleFileChange = (event) => {
         setSelectedFile(event.target.files[0]);
-        setExtractedText(''); // Reset extracted text on new file selection
+        setExtractedText('');
         setMessage('');
     };
 
@@ -36,11 +35,9 @@ const ImageUploadModal = ({
         setExtractedText('');
 
         try {
-            // Create FormData for image upload to a new OCR-specific endpoint
             const formData = new FormData();
             formData.append('image', selectedFile);
 
-            // You'll need a new backend API endpoint that *only* does OCR
             const response = await fetch('http://localhost:3000/api/ai/extract-text-from-image', {
                 method: 'POST',
                 body: formData,
@@ -54,7 +51,7 @@ const ImageUploadModal = ({
             const data = await response.json();
             setExtractedText(data.extractedText || "No text could be extracted.");
             setMessage('Text extracted. You can now analyze it with AI.');
-            onOCRComplete(data.extractedText); // Send extracted text back to parent
+            onOCRComplete(data.extractedText); 
         } catch (error) {
             console.error('Error during OCR:', error);
             setMessage(`OCR failed: ${error.message}`);
@@ -75,16 +72,16 @@ const ImageUploadModal = ({
 
         try {
             const result = await analyzeImageError(
-                selectedFile, // The image file itself might still be needed for full analysis
+                selectedFile,
                 currentCode,
                 currentOutput,
                 currentLanguage,
                 additionalNotes,
-                extractedText // Pass the already extracted text
+                extractedText 
             );
             setMessage('AI Analysis complete!');
-            onAnalysisComplete(result); // Trigger the callback for the full analysis
-            onClose(); // Close modal after analysis complete
+            onAnalysisComplete(result);
+            onClose(); 
         } catch (error) {
             console.error('Error during AI analysis:', error);
             setMessage(`AI Analysis failed: ${error.message}`);
@@ -157,7 +154,7 @@ const ImageUploadModal = ({
                     ></textarea>
                 </div>
 
-                <div className="flex justify-end gap-3 mt-auto"> {/* mt-auto pushes buttons to bottom */}
+                <div className="flex justify-end gap-3 mt-auto"> 
                     <button
                         onClick={onClose}
                         className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-200"

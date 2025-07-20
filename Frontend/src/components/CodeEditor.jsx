@@ -2,8 +2,7 @@
 import PropTypes from 'prop-types';
 import Editor from "@monaco-editor/react";
 
-// Add 'language' prop
-const CodeEditor = ({ code, onCodeChange, roomId, language }) => { // <--- Added language
+const CodeEditor = ({ code, onCodeChange, roomId, language }) => { 
   const handleMonacoEditorChange = (newCode) => {
     onCodeChange(newCode);
   };
@@ -11,8 +10,7 @@ const CodeEditor = ({ code, onCodeChange, roomId, language }) => { // <--- Added
   return (
     <Editor
       height="80vh"
-      // Use the 'language' prop here instead of a fixed 'defaultLanguage'
-      language={language} // <--- Use the language prop
+      language={language} 
       value={code}
       onChange={handleMonacoEditorChange}
       options={{
@@ -34,7 +32,7 @@ CodeEditor.propTypes = {
   code: PropTypes.string.isRequired,
   onCodeChange: PropTypes.func.isRequired,
   roomId: PropTypes.string.isRequired,
-  language: PropTypes.string.isRequired, // <--- Added propType for language
+  language: PropTypes.string.isRequired, 
 };
 
 export default CodeEditor;

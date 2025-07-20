@@ -14,27 +14,23 @@ const Editor = () => {
     if (roomId && username) {
       // Join room
       socket.emit('join-room', roomId, username);
-      console.log('Joining room:', roomId, username); // Debug log
-
-      // Listen for initial code
+      console.log('Joining room:', roomId, username); 
       socket.on('initial-code', (initialCode) => {
-        console.log('Received initial code:', initialCode); // Debug log
+        console.log('Received initial code:', initialCode); 
         setCode(initialCode);
       });
 
-      // Listen for code updates from other users
       socket.on('code-update', (updatedCode) => {
-        console.log("Received updated code:", updatedCode); // Debug log
+        // console.log("Received updated code:", updatedCode); // Debug log
         setCode(updatedCode);
       });
 
       // Listen for user list updates
       socket.on('user-list', (userList) => {
-        console.log("Received user list:", userList); // Debug log
+        // console.log("Received user list:", userList); // Debug log
         setUsers(userList);
       });
 
-      // Clean up listeners when component unmounts
       return () => {
         socket.off('initial-code');
         socket.off('code-update');
@@ -45,7 +41,7 @@ const Editor = () => {
 
   const copyRoomId = () => {
     navigator.clipboard.writeText(roomId);
-    // Optionally, you can add some feedback to the user that the ID was copied
+    
   };
 
   if (!roomId || !username) {
@@ -82,7 +78,6 @@ const Editor = () => {
           </div>
         </div>
         
-        {/* Main content */}
         <div className="w-3/4">
           <div className="mb-2 flex justify-between items-center">
             <span className="text-white font-bold">

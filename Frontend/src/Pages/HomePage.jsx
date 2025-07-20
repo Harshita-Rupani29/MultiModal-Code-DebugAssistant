@@ -10,10 +10,9 @@ import { CopilotKit } from "@copilotkit/react-core";
 import { CopilotPopup } from "@copilotkit/react-ui";
 import "@copilotkit/react-ui/styles.css";
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FaSignInAlt, FaSignOutAlt, FaUpload, FaTimesCircle } from 'react-icons/fa'; // Import FaTimesCircle
+import { FaSignInAlt, FaSignOutAlt, FaUpload, FaTimesCircle } from 'react-icons/fa';
 
 import ImageUploadModal from '../components/ImageUploadModal';
-// Import the new API functions
 import { extractTextFromImage, analyzeImageError } from '../api/Api';
 
 
@@ -48,8 +47,8 @@ const HomePageExtend = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const [showImageUploadModal, setShowImageUploadModal] = useState(false);
-    const [extractedTextFromImage, setExtractedTextFromImage] = useState(''); // New state for OCR result
-    const [aiAnalysisResult, setAiAnalysisResult] = useState(null); // New state for full AI analysis result
+    const [extractedTextFromImage, setExtractedTextFromImage] = useState('');
+    const [aiAnalysisResult, setAiAnalysisResult] = useState(null);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -75,7 +74,6 @@ const HomePageExtend = () => {
 
     const handleRun = async () => {
         setIsRunning(true);
-        // Clear any previous AI analysis results when running new code
         setAiAnalysisResult(null);
         try {
             const response = await executeCode(language, inputCode);
@@ -100,35 +98,28 @@ const HomePageExtend = () => {
     };
 
     const handleEditorDidMount = (editor, monaco) => {
-        // You can use this for Monaco editor instance if needed
+
     };
 
-    // Callback from ImageUploadModal for OCR text
     const handleOCRComplete = (text) => {
-        setExtractedTextFromImage(text); // Store the OCR result
-        setAiAnalysisResult(null); // Clear previous AI analysis if any
+        setExtractedTextFromImage(text);
+        setAiAnalysisResult(null);
     };
 
-    // Callback from ImageUploadModal for full AI analysis result
     const handleAIAnalysisComplete = (result) => {
-        setAiAnalysisResult(result); // Store the full AI analysis result
-        setExtractedTextFromImage(''); // Clear OCR text once full analysis is available
-        // setShowImageUploadModal(false); // Modal will close itself on successful AI analysis
+        setAiAnalysisResult(result);
+        setExtractedTextFromImage('');
     };
 
-    // Callback for any errors during analysis
     const handleAnalysisError = (errorMessage) => {
-        setAiAnalysisResult({ error: errorMessage }); // Set error in analysis result
-        setExtractedTextFromImage(''); // Clear OCR text on error
-        // setShowImageUploadModal(false); // Modal will close itself on error
+        setAiAnalysisResult({ error: errorMessage });
+        setExtractedTextFromImage('');
     };
 
-    // Function to clear the OCR result card
     const clearOCRResult = () => {
         setExtractedTextFromImage('');
     };
 
-    // Function to clear the AI Analysis card
     const clearAIAnalysisResult = () => {
         setAiAnalysisResult(null);
     };
@@ -145,7 +136,7 @@ const HomePageExtend = () => {
             localStorage.setItem('userId', userIdFromUrl);
             localStorage.setItem('userEmail', emailFromUrl);
             setIsLoggedIn(true);
-            window.history.replaceState({}, document.title, window.location.pathname); // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
         } else if (tokenFromStorage) {
             setIsLoggedIn(true);
         } else {
@@ -185,7 +176,7 @@ const HomePageExtend = () => {
                     type: "string",
                     description: "The programming language of the code (e.g., 'python', 'javascript', 'c++').",
                 },
-                extractedText: { // Added extractedText parameter for Copilot action
+                extractedText: {
                     type: "string",
                     description: "Text extracted from a screenshot, if available.",
                 },
@@ -194,14 +185,12 @@ const HomePageExtend = () => {
                     description: "Any additional context or notes from the user.",
                 },
             },
-            required: ["code", "errorLogs"], // Adjust required if extractedText is truly optional
+            required: ["code", "errorLogs"],
         },
         handler: async ({ code, errorLogs, language, extractedText, additionalNotes }) => {
             console.log("Copilot Action: analyzeCode triggered with:", {
                 code, errorLogs, language, extractedText, additionalNotes
             });
-            // You can call your backend API here if the Copilot action should trigger it
-            // For now, it just returns a message
             return `Analyzing your code, logs, and any extracted text... This might take a moment.`;
         },
     });
@@ -310,7 +299,6 @@ const HomePageExtend = () => {
                 </div>
             </div>
 
-            {/* Floating Action Button (FAB) */}
             <button
                 onClick={() => setShowImageUploadModal(true)}
                 className="fixed bottom-8 right-8 bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-70 flex items-center justify-center text-xl z-40"
@@ -320,20 +308,18 @@ const HomePageExtend = () => {
                 <FaUpload />
             </button>
 
-            {/* Image Upload Modal */}
             {showImageUploadModal && (
                 <ImageUploadModal
                     onClose={() => setShowImageUploadModal(false)}
                     currentCode={inputCode}
                     currentOutput={output}
                     currentLanguage={language}
-                    onOCRComplete={handleOCRComplete} // Pass the new OCR complete handler
-                    onAnalysisComplete={handleAIAnalysisComplete} // Pass the AI analysis complete handler
+                    onOCRComplete={handleOCRComplete}
+                    onAnalysisComplete={handleAIAnalysisComplete}
                     onAnalysisError={handleAnalysisError}
                 />
             )}
 
-            {/* OCR Result Card - Displayed separately */}
             {extractedTextFromImage && (
                 <div className="fixed bottom-8 left-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-80 max-h-96 flex flex-col">
                     <div className="flex justify-between items-center mb-2">
@@ -349,7 +335,6 @@ const HomePageExtend = () => {
                 </div>
             )}
 
-            {/* AI Analysis Result Card - Displayed separately */}
             {aiAnalysisResult && (
                 <div className="fixed bottom-8 left-96 ml-8 bg-gray-800 text-white p-6 rounded-lg shadow-lg z-30 w-[400px] max-h-[90vh] flex flex-col">
                     <div className="flex justify-between items-center mb-2">
@@ -367,9 +352,15 @@ const HomePageExtend = () => {
                             <>
                                 <p className="mb-1 text-sm"><span className="font-semibold">Classification:</span> {aiAnalysisResult.classification?.classification} - {aiAnalysisResult.classification?.summary}</p>
                                 <p className="mb-1 text-sm"><span className="font-semibold">Error Type:</span> {aiAnalysisResult.analysis?.errorType}</p>
-                                {/* REMOVED: <p className="mb-1 text-sm"><span className="font-semibold">Summary:</span> {aiAnalysisResult.analysis?.summary}</p> */}
-                               
-                                
+                                <p className="mb-2 text-sm"><span className="font-semibold">Explanation:</span> {aiAnalysisResult.analysis?.explanation}</p>
+                                {aiAnalysisResult.solution?.suggestedCodeFix && (
+                                    <>
+                                        <h4 className="font-bold text-md mb-2">Suggested Code Fix:</h4>
+                                        <pre className="bg-gray-700 p-2 rounded text-xs overflow-x-auto">
+                                            {aiAnalysisResult.solution.suggestedCodeFix}
+                                        </pre>
+                                    </>
+                                )}
                             </>
                         )}
                     </div>

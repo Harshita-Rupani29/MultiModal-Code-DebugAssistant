@@ -44,8 +44,6 @@ export const extractTextFromImage = async (imageFile) => {
         throw error;
     }
 };
-
-// Modified API function for full AI analysis, now accepting extractedText
 export const analyzeImageError = async (imageFile, code, errorLogs, language, additionalNotes, extractedText = '') => {
     const formData = new FormData();
     formData.append('image', imageFile);
@@ -53,7 +51,7 @@ export const analyzeImageError = async (imageFile, code, errorLogs, language, ad
     formData.append('errorLogs', errorLogs);
     formData.append('language', language);
     formData.append('additionalNotes', additionalNotes);
-    formData.append('extractedText', extractedText); // Pass extractedText
+    formData.append('extractedText', extractedText); 
 
     try {
         const response = await fetch('http://localhost:3000/api/ai/analyze-image-error', {
