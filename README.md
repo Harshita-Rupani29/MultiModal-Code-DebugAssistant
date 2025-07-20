@@ -42,8 +42,7 @@ This tool aims to simplify debugging by accepting various inputs—code snippets
 Watch a quick demonstration of the AI-Powered Code Debug Assistant in action:
 
 <a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> <img src="Demos/EchoCodeDemo.mp4" alt="EchoCodeDemo Video Thumbnail" width="600" /> </a>
-
-**[Click here to watch the full demo video!](https://www.youtube.com/watch?v=YOUR_YOUTUBE_VIDEO_ID_HERE)** ---
+---
 
 ### Screenshots
 
@@ -52,9 +51,9 @@ Here are some screenshots showcasing different aspects of the application:
 | Feature/Page | Screenshot 1 | Screenshot 2 |
 | :--------------------- | :------------------------------- | :------------------------------ |
 | Dashboard/Main UI | ![Dashboard](Demos/Demo2.png) | ![Code Editor](Demos/Demo3.png) |
-| Error Analysis | ![Error Analysis](Demos/Demo4.png) | ![Solution View](Demos/Demo5.png) |
-| Screenshot Annotation | ![Annotation Tool](Demos/Demo6.png) | ![Annotated UI](Demos/Demo7.png) |
-| Settings/Auth | ![Settings](Demos/Demo8.png) | ![Login Page](Demos/Demo9.png) |
+| Code Editor | ![Error Analysis](Demos/Demo4.png) | ![Solution View](Demos/Demo5.png) |
+| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo6.png) | ![Annotated UI](Demos/Demo7.png) |
+| Database(Postgres) |  ![Login Page](Demos/Demo9.png) |
 ---
 
 ## Technologies Used
@@ -71,7 +70,7 @@ Here are some screenshots showcasing different aspects of the application:
 * **Express.js:** Web application framework for RESTful APIs.
 * **PostgreSQL:** Relational database for data storage.
 * **JWT:** For token-based authentication.
-* **OAuth (Google/GitHub):** For external authentication.
+* **OAuth (Google):** For external authentication.
 * **Multer:** For handling file uploads (screenshots, logs).
 
 ### AI/ML
@@ -80,9 +79,9 @@ Here are some screenshots showcasing different aspects of the application:
 * **Computer Vision Models:** For multimodal analysis of screenshots and diagrams.
 * **Agentic Workflows:** For error classification and solution generation.
 
-### Real-time (Good to have)
+### Real-time 
 
-* **WebSockets (e.g., Socket.IO):** For real-time collaboration features (if implemented).
+* **WebSockets (e.g., Socket.IO):** For real-time collaboration features .
 
 ## Project Structure
 ├── .devcontainer/
@@ -147,111 +146,144 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 Make sure you have the following installed:
 
-* Node.js (v18.x or higher recommended)
-* npm (Node Package Manager) or Yarn
-* PostgreSQL
-* Git
+* Node.js (v18.x or higher recommended)  
+* npm (Node Package Manager) or Yarn  
+* PostgreSQL  
+* Git  
 
 ### Installation
 
-1.  **Clone the repository:**
+1. **Clone the repository:**
+
     ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
+    git clone https://github.com/your-username/your-repo-name.git
     cd your-repo-name
     ```
-    (Replace `your-username/your-repo-name` with your actual GitHub repository URL.)
 
-2.  **Backend Setup:**
+2. **Backend Setup:**
+
     ```bash
     cd Backend
-    npm install # or yarn install
+    npm install  # or yarn install
     ```
 
-3.  **Frontend Setup:**
+3. **Frontend Setup:**
+
     ```bash
     cd ../Frontend
-    npm install # or yarn install
+    npm install  # or yarn install
     ```
+
+---
 
 ### Environment Variables
 
-You need to create `.env` files in both the `Backend` and `Frontend` directories based on the examples below.
+Create `.env` files in both `Backend` and `Frontend` folders.
 
 #### Backend (`Backend/.env`)
 
 ```env
 NODE_ENV=development
-GOOGLE_API_KEY=# Replace with your actual Gemini API Key
-JWT_KEY=# Keep this secret and ideally generate a new strong one
+GOOGLE_API_KEY=your-google-api-key
+JWT_KEY=your-jwt-secret
 PORT=3000
 GCP_AI_SDK_LOGLEVEL=DEBUG
 CLIENT_URL=http://localhost:5173
+
 DB_USER=postgres
 DB_HOST=localhost
 DB_DATABASE=codeChat
-DB_PASSWORD= # Replace with your PostgreSQL password
+DB_PASSWORD=your-db-password
 DB_PORT=5432
 
-GOOGLE_CLIENT_ID=# Replace with your actual Google Client ID
-GOOGLE_CLIENT_SECRET= # Replace with your actual Google Client Secret
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 
-SESSION_SECRET= # Keep this secret and ideally generate a new strong one
-GOOGLE_GEMINI_API_KEY= # This might be redundant with GOOGLE_API_KEY, use the one your Gemini SDK expects
+SESSION_SECRET=your-session-secret
+GOOGLE_GEMINI_API_KEY=your-gemini-api-key
+```
 
-Frontend (Frontend/.env)
-Code snippet
+#### Frontend (`Frontend/.env`)
 
+```env
 REACT_APP_BACKEND_URL=http://localhost:3000
-Database Setup
-Create PostgreSQL Database:
-Make sure your PostgreSQL server is running. Then, create the database:
+```
 
-SQL
+---
 
-CREATE DATABASE codeChat;
-(Or whatever DB_DATABASE you configured).
+### Database Setup
 
-Run Migrations/Seeders:
-If your backend has database migrations or seeders, you'll need to run them. (Add specific commands here if you have them, e.g., npm run migrate).
+1. Start PostgreSQL and create your database:
 
-Running the Application
-Start the Backend Server:
-From the Backend directory:
+    ```sql
+    CREATE DATABASE codeChat;
+    ```
 
-Bash
+2. Run Migrations/Seeders if any:
 
-npm start # or node index.js, or npm run dev if you have a dev script
-Start the Frontend Development Server:
-From the Frontend directory:
+    ```bash
+    npm run migrate
+    ```
 
-Bash
+---
 
-npm run dev # or npm start, or yarn dev
-The frontend application should now be accessible at http://localhost:5173 (or the port specified by Vite).
+### Running the Application
 
-Authentication
-The application supports:
+**Backend:**
 
-JWT (JSON Web Tokens): For managing user sessions after successful login.
+```bash
+cd Backend
+npm run dev  # or npm start or node index.js
+```
 
-OAuth Integration: Seamless login experience using your Google or GitHub accounts.
+**Frontend:**
 
-Contributing
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+```bash
+cd ../Frontend
+npm run dev  # or yarn dev
+```
 
-Fork the Project
+Frontend should now be running at:  
+👉 http://localhost:5173
 
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
+---
 
-Commit your Changes (git commit -m 'Add some AmazingFeature')
+### Authentication
 
-Push to the Branch (git push origin feature/AmazingFeature)
+Supports:
 
-Open a Pull Request
+- JWT (JSON Web Tokens)
+- OAuth (Google, GitHub integration)
 
-License
-Distributed under the MIT License. See LICENSE for more information. (Create a LICENSE file in your root directory if you haven't already).
+---
 
-Contact
-Your Name/Team Name - your.email@example.com
-Project Link: https://github.com/your-username/your-repo-name
+### Contributing
+
+1. Fork the project  
+2. Create your Feature Branch:  
+    ```bash
+    git checkout -b feature/AmazingFeature
+    ```  
+3. Commit your changes:  
+    ```bash
+    git commit -m 'Add some AmazingFeature'
+    ```  
+4. Push to the branch:  
+    ```bash
+    git push origin feature/AmazingFeature
+    ```  
+5. Open a Pull Request  
+
+---
+
+### License
+
+Distributed under the MIT License. See `LICENSE` for more info.
+
+---
+
+### Contact
+
+**Harshita Rupani**  
+📧 harshitarupani4@gmail.com  
+🔗 [GitHub Project](https://github.com/your-username/your-repo-name)
