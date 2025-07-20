@@ -51,7 +51,7 @@ Here are some screenshots showcasing different aspects of the application:
 | :--------------------- | :------------------------------- | :------------------------------ |
 | Dashboard/Main UI | ![Dashboard](Demos/Demo1.png) | ![Code Editor](Demos/Demo2.png) |
 | Code Editor | ![Error Analysis](Demos/Demo3.png) | ![Solution View](Demos/Demo4.png) |
-| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo5.png) | ![Annotated UI](Demos/demo6.png) |
+| Ai Analysis(Multimodal)| ![Annotation Tool](Demos/Demo5.png) | ![Annotated UI](Demos/demo6.png) |
 | Database(Postgres) |  ![Login Page](Demos/Demo7.png) 
 ---
 
