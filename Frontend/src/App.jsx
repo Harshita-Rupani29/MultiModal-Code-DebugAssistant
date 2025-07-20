@@ -3,7 +3,7 @@ import HomePage from "./Pages/HomePage";
 import LandingPage from "./Pages/LandingPage";
 import AboutPage from "./Pages/AboutPage";
 import Login from "./Pages/Login";
-import ChatApp from "./chatapp";
+
 
 function App() {
   return (

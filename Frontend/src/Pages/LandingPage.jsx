@@ -6,7 +6,7 @@ import {
   AiOutlineCheck
 } from "react-icons/ai";
 import backgroundImage from '../images/background.avif';
-import copilotgif from '../images/Progrify.gif'
+import copilotgif from '../images/ExhoCode.gif'
 import { Link } from "react-router-dom";
 
 export default function LandingPage() {
