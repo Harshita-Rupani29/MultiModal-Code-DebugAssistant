@@ -40,7 +40,7 @@ This tool aims to simplify debugging by accepting various inputs—code snippets
 
 Watch a quick demonstration of the AI-Powered Code Debug Assistant in action:
 
-<a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> <img src="Demos/EchoCodeDemo.mp4" alt="EchoCodeDemo Video Thumbnail" width="600" /> </a>
+<a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> <img  alt="EchoCodeDemo Video Thumbnail" width="600" /> </a>
 ---
 
 ### Screenshots
@@ -51,8 +51,8 @@ Here are some screenshots showcasing different aspects of the application:
 | :--------------------- | :------------------------------- | :------------------------------ |
 | Dashboard/Main UI | ![Dashboard](Demos/Demo1.png) | ![Code Editor](Demos/Demo2.png) |
 | Code Editor | ![Error Analysis](Demos/Demo3.png) | ![Solution View](Demos/Demo4.png) |
-| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo5.png) | ![Annotated UI](Demos/Demo6.png) |
-| Database(Postgres) |  ![Login Page](Demos/Demo7.png) |
+| Ai Analysis(Multimodal( | ![Annotation Tool](Demos/Demo5.png) | ![Annotated UI](Demos/demo6.png) |
+| Database(Postgres) |  ![Login Page](Demos/Demo7.png) 
 ---
 
 ## Technologies Used
@@ -231,4 +231,4 @@ Distributed under the MIT License. See `LICENSE` for more info.
 
 **Harshita Rupani**  
 📧 harshitarupani4@gmail.com  
-🔗 [GitHub Project](https://github.com/your-username/your-repo-name)
+🔗 [GitHub Project](https://github.com/Harshita-Rupani29/MultiModal-Code-DebugAssistant.git)
