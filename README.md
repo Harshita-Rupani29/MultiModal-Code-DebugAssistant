@@ -38,10 +38,9 @@ This tool aims to simplify debugging by accepting various inputs—code snippets
 
 ## Demo
 
-Watch a quick demonstration of the AI-Powered Code Debug Assistant in action:
+**🚀 Watch a quick demo of the AI-Powered Code Debug Assistant:**  
+[▶️ Click here to watch the demo](https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing)
 
-<a href="https://drive.google.com/file/d/1V-KxiqdS07NZ37WSEnUBMEnizishEzOE/view?usp=sharing"> </a>
----
 
 ### Screenshots
 
