@@ -21,18 +21,18 @@
 
 The **AI-Powered Code Debug Assistant** is an innovative developer tool designed to revolutionize the debugging process. Leveraging the power of Large Language Models (LLMs) and intelligent agentic workflows, this assistant helps developers efficiently identify and resolve code errors, even those involving complex UI bugs or log analysis.
 
-This tool aims to simplify debugging by accepting various inputs—code snippets, error logs, screenshots, and tracebacks—to provide precise, AI-driven solutions. With multimodal support, it can even analyze diagrams and user interface issues, offering corrected code along with clear rationales for the proposed fixes.
+This tool aims to simplify debugging by accepting various inputs—code snippets, error logs, screenshots, to provide precise, AI-driven solutions. With multimodal support, it can even analyze diagrams and user interface issues, offering corrected code along with clear rationales for the proposed fixes.
 
 ## Features
 
 * **Multimodal Input Support:** Accepts code, logs, screenshots, and error traces for comprehensive analysis.
 * **Intelligent Error Extraction:** AI agents are trained to intelligently extract critical error information from diverse inputs.
-* **AI-Powered Code Correction:** Utilizes advanced LLMs (Gemini, GPT-4, Claude 3.5) to suggest accurate code fixes.
+* **AI-Powered Code Correction:** Utilizes advanced LLM (Gemini) to suggest accurate code fixes.
 * **Screenshot Annotation:** Tools for annotating screenshots to highlight specific UI bugs for AI analysis.
 * **Code Editing Interface:** Intuitive React-based frontend for seamless code editing and viewing.
 * **Real-time Log Viewing:** Integrated features for easy viewing and analysis of application logs.
-* **PostgreSQL Database:** Stores code history and error patterns for continuous improvement and learning.
-* **Secure Authentication:** Implements JWT tokens for session management and OAuth (Google/GitHub) for convenient login.
+* **PostgreSQL Database:** Stores User History.
+* **Secure Authentication:** Implements JWT tokens for session management and OAuth (Google) for convenient login.
 * **File Upload Handling:** Robust backend for secure handling of uploaded screenshots and log files.
 * **Real-Time Collaboration:** User can invite peers and they can code together and also ask Ai for Anlaysis on Main Code editor.
 
@@ -101,22 +101,22 @@ Make sure you have the following installed:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone https://github.com/Harshita-Rupani29/MultiModal-Code-DebugAssistant.git
+    cd MultiModal-Code-DebugAssistant
     ```
 
 2. **Backend Setup:**
 
     ```bash
     cd Backend
-    npm install  # or yarn install
+    npm install 
     ```
 
 3. **Frontend Setup:**
 
     ```bash
     cd ../Frontend
-    npm install  # or yarn install
+    npm install 
     ```
 
 ---
@@ -129,7 +129,7 @@ Create `.env` files in both `Backend` and `Frontend` folders.
 
 ```env
 NODE_ENV=development
-GOOGLE_API_KEY=your-google-api-key
+GOOGLE_API_KEY=your-gemini-api-key
 JWT_KEY=your-jwt-secret
 PORT=3000
 GCP_AI_SDK_LOGLEVEL=DEBUG
@@ -145,7 +145,6 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 SESSION_SECRET=your-session-secret
-GOOGLE_GEMINI_API_KEY=your-gemini-api-key
 ```
 
 #### Frontend (`Frontend/.env`)
@@ -178,7 +177,7 @@ REACT_APP_BACKEND_URL=http://localhost:3000
 
 ```bash
 cd Backend
-npm run dev  # or npm start or node index.js
+npm start or node index.js
 ```
 
 **Frontend:**
@@ -197,7 +196,7 @@ Frontend should now be running at:
 
 Supports:
 
-- JWT (JSON Web Tokens)
+- JWT (JSON Web Tokens) For Session Management
 - OAuth (Google, GitHub integration)
 
 ---
